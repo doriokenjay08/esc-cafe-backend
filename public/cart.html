@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ESC Cafe – Cart</title>
+  <link rel="icon" type="image/jpeg" href="/images/logo.png" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600&family=Dancing+Script:wght@500;700&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    .nav-cart-wrap {
+      position: relative;
+      display: inline-block;
+    }
+
+    .cart-badge {
+      position: absolute;
+      top: -6px;
+      right: -8px;
+      background: #8B4513;
+      color: #fff;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      display: none;
+    }
+
+    .order-status.success {
+      color: #155724;
+      background: #d4edda;
+      padding: 10px 16px;
+      border-radius: 8px;
+      margin-top: 12px;
+    }
+
+    .order-status.error {
+      color: #721c24;
+      background: #f8d7da;
+      padding: 10px 16px;
+      border-radius: 8px;
+      margin-top: 12px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar">
+    <div class="logo" aria-label="ESC Logo">
+      <img src="/images/logo.png" alt="ESC Cafe Logo" />
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="menu.html">Menu</a></li>
+      <li><a href="contact.html">Contact</a></li>
+      <li><a href="account.html">Account</a></li>
+    </ul>
+    <a href="cart.html" class="nav-cart-wrap">
+      <div class="nav-cart" aria-label="Cart">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <path d="M16 10a4 4 0 01-8 0" />
+        </svg>
+        <span class="cart-badge" id="cartBadge1"></span>
+      </div>
+    </a>
+  </nav>
+
+  <section class="cart-section">
+    <div class="cart-left">
+      <h1 class="cart-title">YOUR ORDER</h1>
+      <div class="cart-underline"></div>
+      <div class="cart-items" id="cartItems"></div>
+      <div class="cart-empty" id="cartEmpty" style="display:none">
+        <p>Your cart is empty.</p>
+        <a href="mainm.html" class="btn-browse">Browse Menu</a>
+      </div>
+      <div class="cart-form" id="cartForm">
+        <h2 class="cart-form-title">Your Details</h2>
+        <div class="form-group">
+          <label for="customerName">Full Name</label>
+          <input type="text" id="customerName" placeholder="Juan dela Cruz" />
+        </div>
+        <div class="form-group">
+          <label for="customerEmail">Email</label>
+          <input type="email" id="customerEmail" placeholder="juan@example.com" />
+        </div>
+        <div class="form-group">
+          <label for="customerPhone">Phone Number</label>
+          <input type="tel" id="customerPhone" placeholder="09XXXXXXXXX" />
+        </div>
+        <h2 class="cart-form-title">Payment Method</h2>
+        <div class="payment-options">
+          <label class="payment-option" id="codOption">
+            <input type="radio" name="payment" value="COD" checked />
+            <span class="payment-icon">🏠</span>
+            <span class="payment-label">Cash on Delivery</span>
+          </label>
+          <label class="payment-option" id="gcashOption">
+            <input type="radio" name="payment" value="GCash" />
+            <span class="payment-icon">📱</span>
+            <span class="payment-label">GCash</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="cart-right">
+      <div class="cart-summary">
+        <h2 class="summary-title">Order Summary</h2>
+        <div class="summary-rows" id="summaryRows"></div>
+        <div class="summary-divider"></div>
+        <div class="summary-total">
+          <span>Total</span>
+          <span id="summaryTotal">₱ 0</span>
+        </div>
+        <button class="btn-order" id="placeOrderBtn" onclick="placeOrder()">Place Order</button>
+        <div class="order-status" id="orderStatus"></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-logo">
+      <img src="images/logo.png" alt="ESC Cafe Logo" />
+    </div>
+    <p class="footer-tagline">Every sip counts.</p>
+    <p class="footer-copy">©2026 ESC Cafe. All rights reserved.</p>
+  </footer>
+
+  <script src="index.js"></script>
+  <script src="cart.js"></script>
+</body>
+
+</html>
