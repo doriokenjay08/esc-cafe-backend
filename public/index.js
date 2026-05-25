@@ -1,5 +1,5 @@
-// const API = "https://esc-cafe-backend-production.up.railway.app";
-const API = "http://localhost:5000";
+const API = "https://esc-cafe-backend-production.up.railway.app";
+//const API = "http://localhost:5000";
 function getCart() {
   return JSON.parse(localStorage.getItem("esc_cart") || "[]");
 }
