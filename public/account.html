@@ -5,17 +5,174 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ESC Cafe – Account</title>
-  <link rel="icon" type="image/jpeg" href="/images/logo.png" />
+  <link rel="icon" type="image/jpeg" href="images/logo.png" />
   <link
     href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Poppins:wght@300;400;500;600&family=Dancing+Script:wght@500;700&display=swap"
     rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <style>
+    .account-tabs {
+      display: flex;
+      border-bottom: 2px solid #ddd;
+      margin-bottom: 28px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 12px 0;
+      background: none;
+      border: none;
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 600;
+      color: #999;
+      cursor: pointer;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      transition: color .2s;
+      border-bottom: 3px solid transparent;
+      margin-bottom: -2px;
+    }
+
+    .tab-btn.active {
+      color: var(--blue);
+      border-bottom-color: var(--blue);
+    }
+
+    .tab-btn:hover:not(.active) {
+      color: var(--dark);
+    }
+
+    .social-btns {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .btn-social {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px 16px;
+      border: 1.5px solid #ddd;
+      background: #fff;
+      font-family: var(--font-body);
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--dark);
+      cursor: pointer;
+      transition: background .2s, border-color .2s, box-shadow .2s;
+      border-radius: 4px;
+    }
+
+    .btn-social svg {
+      width: 18px;
+      height: 18px;
+      flex-shrink: 0;
+    }
+
+    .btn-social:hover {
+      background: #f5f5f5;
+      border-color: #bbb;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, .06);
+    }
+
+    .account-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin: 20px 0;
+      color: #bbb;
+      font-size: 12px;
+    }
+
+    .account-divider::before,
+    .account-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #ddd;
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: var(--blue);
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      padding: 15px;
+      border: none;
+      cursor: pointer;
+      transition: background .2s, transform .15s;
+      margin-top: 8px;
+      margin-bottom: 4px;
+    }
+
+    .btn-submit:hover {
+      background: #1a3de0;
+      transform: translateY(-2px);
+    }
+
+    .btn-submit:active {
+      transform: translateY(0);
+    }
+
+    .form-status {
+      min-height: 20px;
+      font-size: 13px;
+      font-weight: 500;
+      text-align: center;
+      margin-top: 8px;
+      color: var(--rust);
+    }
+
+    .login-logo-sm {
+      display: block;
+      margin: 0 auto 20px;
+    }
+
+    .nav-cart-wrap {
+      position: relative;
+      display: inline-block;
+    }
+
+    .cart-badge {
+      position: absolute;
+      top: -6px;
+      right: -8px;
+      background: var(--rust);
+      color: #fff;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      font-size: 11px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      display: none;
+    }
+
+    #registerForm .form-group {
+      margin-bottom: 16px;
+    }
+
+    #loginForm .form-group {
+      margin-bottom: 16px;
+    }
+  </style>
 </head>
 
 <body data-page="login">
+
   <nav class="navbar">
     <div class="logo" aria-label="ESC Logo">
-      <img src="/images/logo.png" alt="ESC Cafe Logo" />
+      <img src="images/logo.png" alt="ESC Cafe Logo" />
     </div>
     <ul class="nav-links">
       <li><a href="index.html">Home</a></li>
@@ -23,30 +180,35 @@
       <li><a href="contact.html">Contact</a></li>
       <li><a href="account.html" class="active">Account</a></li>
     </ul>
-    <a href="cart.html">
+    <a href="cart.html" class="nav-cart-wrap">
       <div class="nav-cart" aria-label="Cart">
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
           <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
           <line x1="3" y1="6" x2="21" y2="6" />
           <path d="M16 10a4 4 0 01-8 0" />
         </svg>
+        <span class="cart-badge"></span>
       </div>
     </a>
   </nav>
 
-  <div class="account-wrapper">
-    <div class="account-left">
-      <img class="account-bg" src="/images/logo.png" alt="ESC Cafe" />
-      <div class="account-left-overlay"></div>
-      <div class="account-brand">
-        <img class="account-logo" src="/images/logo.png" alt="ESC Logo" />
-        <h1 class="account-tagline-big">Every Sip<br>Counts</h1>
-        <p class="account-script">Good coffee. Good people.</p>
+  <div class="login-wrapper">
+
+    <div class="login-left">
+      <img class="login-bg" src="images/logo.png" alt="ESC Cafe" />
+      <div class="login-left-overlay"></div>
+      <div class="login-brand">
+        <img class="login-logo" src="images/logo.png" alt="ESC Logo" />
+        <h1 class="login-tagline-big">Every Sip<br>Counts</h1>
+        <p class="login-script">Good coffee. Good people.</p>
       </div>
     </div>
 
-    <div class="account-right">
-      <div class="account-form-wrap">
+    <div class="login-right">
+      <div class="login-form-wrap">
+
+        <img class="login-logo-sm" src="images/logo.png" alt="ESC Logo" width="52" height="52" />
+
         <div class="account-tabs">
           <button class="tab-btn active" id="loginTab" onclick="switchTab('login')">Sign In</button>
           <button class="tab-btn" id="registerTab" onclick="switchTab('register')">Sign Up</button>
@@ -121,7 +283,7 @@
             <label for="regPassword">Password</label>
             <div class="password-wrap">
               <input type="password" id="regPassword" placeholder="••••••••" />
-              <button class="toggle-pw" onclick="togglePw('regPassword')" aria-label="Show password">
+              <button type="button" class="toggle-pw" onclick="togglePw('regPassword')" aria-label="Show password">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
                   <circle cx="12" cy="12" r="3" />
@@ -136,6 +298,7 @@
         <div class="back-home">
           <a href="index.html">← Back to Home</a>
         </div>
+
       </div>
     </div>
   </div>
