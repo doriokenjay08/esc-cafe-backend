@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ESC Cafe – Admin</title>
+  <link rel="icon" type="image/jpeg" href="images/logo.png" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet" />
+  <style>
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --brand: #8B4513;
+      --brand-dark: #6b3410;
+      --brand-light: #f5ede6;
+      --sidebar-w: 240px;
+      --bg: #f4f6f8;
+      --surface: #fff;
+      --border: #e8e8e8;
+      --text: #1a1a1a;
+      --muted: #6b7280;
+      --success: #15803d;
+      --success-bg: #dcfce7;
+      --danger: #b91c1c;
+      --danger-bg: #fee2e2;
+      --warn: #b45309;
+      --warn-bg: #fef3c7;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .layout {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: var(--sidebar-w);
+      background: linear-gradient(160deg, #5c2c0e 0%, var(--brand) 100%);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      box-shadow: 4px 0 20px rgba(0, 0, 0, .15);
+      z-index: 100;
+    }
+
+    .sidebar-brand {
+      padding: 28px 20px 24px;
+      font-size: 18px;
+      font-weight: 700;
+      border-bottom: 1px solid rgba(255, 255, 255, .15);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sidebar-brand img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      padding: 16px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 11px 14px;
+      border-radius: 10px;
+      font-size: 13.5px;
+      font-weight: 500;
+      cursor: pointer;
+      color: rgba(255, 255, 255, .8);
+      transition: all .2s;
+    }
+
+    .nav-item:hover,
+    .nav-item.active {
+      background: rgba(255, 255, 255, .18);
+      color: #fff;
+    }
+
+    .nav-item .icon {
+      font-size: 17px;
+      width: 22px;
+      text-align: center;
+    }
+
+    .sidebar-bottom {
+      padding: 16px 12px;
+      border-top: 1px solid rgba(255, 255, 255, .15);
+    }
+
+    .logout-btn {
+      width: 100%;
+      padding: 11px 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, .08);
+      border: 1px solid rgba(255, 255, 255, .2);
+      border-radius: 10px;
+      color: rgba(255, 255, 255, .85);
+      font-size: 13.5px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all .2s;
+    }
+
+    .logout-btn:hover {
+      background: rgba(220, 38, 38, .3);
+      color: #fff;
+    }
+
+    .main {
+      margin-left: var(--sidebar-w);
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .topbar {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 32px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .topbar-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .topbar-user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+      font-weight: 600;
+      background: var(--brand-light);
+      color: var(--brand);
+      padding: 6px 14px;
+      border-radius: 20px;
+    }
+
+    .content {
+      flex: 1;
+      padding: 32px;
+      overflow-y: auto;
+    }
+
+    .tab-panel {
+      display: none;
+    }
+
+    .tab-panel.active {
+      display: block;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border-radius: 14px;
+      padding: 22px 20px;
+      border-left: 4px solid var(--brand);
+      box-shadow: 0 1px 6px rgba(0, 0, 0, .06);
+      transition: transform .2s, box-shadow .2s;
+    }
+
+    .stat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, .1);
+    }
+
+    .stat-label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      margin-bottom: 10px;
+    }
+
+    .stat-value {
+      font-size: 30px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .card {
+      background: var(--surface);
+      border-radius: 14px;
+      box-shadow: 0 1px 6px rgba(0, 0, 0, .06);
+      overflow: hidden;
+    }
+
+    .card-header {
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .card-header h2 {
+      font-size: 15px;
+      font-weight: 700;
+    }
+
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .search-input {
+      padding: 8px 14px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: inherit;
+      min-width: 200px;
+      outline: none;
+      transition: border-color .2s;
+    }
+
+    .search-input:focus {
+      border-color: var(--brand);
+    }
+
+    .filter-select {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: inherit;
+      background: #fff;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .btn {
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all .2s;
+      font-family: inherit;
+    }
+
+    .btn-primary {
+      background: var(--brand);
+      color: #fff;
+    }
+
+    .btn-primary:hover {
+      background: var(--brand-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: #f0f0f0;
+      color: var(--text);
+    }
+
+    .btn-secondary:hover {
+      background: #e0e0e0;
+    }
+
+    .btn-danger {
+      background: var(--danger-bg);
+      color: var(--danger);
+      border: 1px solid #fca5a5;
+    }
+
+    .btn-danger:hover {
+      background: #fca5a5;
+    }
+
+    .btn-sm {
+      padding: 5px 11px;
+      font-size: 12px;
+      border-radius: 6px;
+    }
+
+    .btn-icon {
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-size: 16px;
+      padding: 4px 6px;
+      border-radius: 6px;
+      transition: background .15s;
+    }
+
+    .btn-icon:hover {
+      background: #f0f0f0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    thead {
+      background: #f9fafb;
+    }
+
+    th {
+      padding: 12px 16px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .6px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    td {
+      padding: 14px 16px;
+      font-size: 13px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tbody tr:hover {
+      background: #fafafa;
+    }
+
+    .td-actions {
+      display: flex;
+      gap: 6px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+
+    .badge-pending {
+      background: var(--warn-bg);
+      color: var(--warn);
+    }
+
+    .badge-confirmed {
+      background: #dbeafe;
+      color: #1d4ed8;
+    }
+
+    .badge-preparing {
+      background: #ede9fe;
+      color: #6d28d9;
+    }
+
+    .badge-ready {
+      background: var(--success-bg);
+      color: var(--success);
+    }
+
+    .badge-completed {
+      background: var(--success-bg);
+      color: var(--success);
+    }
+
+    .badge-cancelled {
+      background: var(--danger-bg);
+      color: var(--danger);
+    }
+
+    .badge-admin {
+      background: var(--brand);
+      color: #fff;
+    }
+
+    .badge-customer {
+      background: #f0f0f0;
+      color: #555;
+    }
+
+    .badge-available {
+      background: var(--success-bg);
+      color: var(--success);
+    }
+
+    .badge-unavailable {
+      background: var(--danger-bg);
+      color: var(--danger);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .empty-state .icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+      opacity: .4;
+    }
+
+    .loading-row td {
+      text-align: center;
+      padding: 40px;
+      color: var(--muted);
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, .5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .overlay.open {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--surface);
+      border-radius: 16px;
+      padding: 28px;
+      width: 100%;
+      max-width: 480px;
+      max-height: 92vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, .2);
+      animation: slideUp .25s ease;
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-title {
+      font-size: 18px;
+      font-weight: 700;
+      margin-bottom: 20px;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      padding: 9px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      font-size: 13px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color .2s;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      border-color: var(--brand);
+    }
+
+    .field input[readonly] {
+      background: #f9f9f9;
+      color: var(--muted);
+    }
+
+    .modal-footer {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+    }
+
+    .modal-footer-left {
+      margin-right: auto;
+    }
+
+    .img-preview {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      margin-top: 6px;
+      display: none;
+    }
+
+    .img-preview.visible {
+      display: block;
+    }
+
+    .alert {
+      padding: 10px 14px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      margin-top: 12px;
+      display: none;
+    }
+
+    .alert.show {
+      display: block;
+    }
+
+    .alert-success {
+      background: var(--success-bg);
+      color: var(--success);
+    }
+
+    .alert-error {
+      background: var(--danger-bg);
+      color: var(--danger);
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 64px;
+      }
+
+      .sidebar-brand span,
+      .nav-item span,
+      .logout-btn span {
+        display: none;
+      }
+
+      .main {
+        margin-left: 64px;
+      }
+
+      .content {
+        padding: 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="layout">
+
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <img src="images/logo.png" alt="ESC Logo" />
+        <span>ESC Admin</span>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-item active" data-tab="dashboard">
+          <span class="icon">📊</span><span>Dashboard</span>
+        </div>
+        <div class="nav-item" data-tab="orders">
+          <span class="icon">📋</span><span>Orders</span>
+        </div>
+        <div class="nav-item" data-tab="menu">
+          <span class="icon">🍽️</span><span>Menu Items</span>
+        </div>
+        <div class="nav-item" data-tab="users">
+          <span class="icon">👥</span><span>Users</span>
+        </div>
+      </nav>
+      <div class="sidebar-bottom">
+        <button class="logout-btn" onclick="logout()">
+          <span class="icon">🚪</span><span>Logout</span>
+        </button>
+      </div>
+    </aside>
+
+    <div class="main">
+      <div class="topbar">
+        <span class="topbar-title" id="pageTitle">Dashboard</span>
+        <div class="topbar-user" id="userDisplay">Admin</div>
+      </div>
+
+      <div class="content">
+
+        <div id="panel-dashboard" class="tab-panel active">
+          <div class="stats-grid" id="statsGrid">
+            <div class="stat-card">
+              <div class="stat-label">Total Orders</div>
+              <div class="stat-value">—</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Pending</div>
+              <div class="stat-value">—</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Revenue Today</div>
+              <div class="stat-value">—</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Total Users</div>
+              <div class="stat-value">—</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-label">Completed Today</div>
+              <div class="stat-value">—</div>
+            </div>
+          </div>
+        </div>
+
+        <div id="panel-orders" class="tab-panel">
+          <div class="card">
+            <div class="card-header">
+              <h2>Orders</h2>
+              <div class="controls">
+                <input type="text" class="search-input" id="orderSearch" placeholder="Search orders…"
+                  oninput="filterOrders()" />
+                <select class="filter-select" id="orderStatusFilter" onchange="filterOrders()">
+                  <option value="">All Status</option>
+                  <option value="pending">Pending</option>
+                  <option value="confirmed">Confirmed</option>
+                  <option value="preparing">Preparing</option>
+                  <option value="ready">Ready</option>
+                  <option value="completed">Completed</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
+                <select class="filter-select" id="paymentFilter" onchange="filterOrders()">
+                  <option value="">All Payments</option>
+                  <option value="COD">Cash on Delivery</option>
+                  <option value="GCash">GCash</option>
+                </select>
+              </div>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>Customer</th>
+                  <th>Items</th>
+                  <th>Total</th>
+                  <th>Status</th>
+                  <th>Payment</th>
+                  <th>Date</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="ordersBody">
+                <tr class="loading-row">
+                  <td colspan="8">Loading orders…</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="panel-menu" class="tab-panel">
+          <div class="card">
+            <div class="card-header">
+              <h2>Menu Items</h2>
+              <div class="controls">
+                <input type="text" class="search-input" id="menuSearch" placeholder="Search items…"
+                  oninput="filterMenu()" />
+                <select class="filter-select" id="menuCategoryFilter" onchange="filterMenu()">
+                  <option value="">All Categories</option>
+                  <option value="Signature">Signature</option>
+                  <option value="Add ons">Add ons</option>
+                  <option value="Non-Coffee">Non-Coffee</option>
+                  <option value="Espresso">Espresso</option>
+                  <option value="Blended (Frappe)">Blended (Frappe)</option>
+                  <option value="Refreshers">Refreshers</option>
+                </select>
+                <button class="btn btn-primary" onclick="openMenuModal()">+ Add Item</button>
+              </div>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Image</th>
+                  <th>Name</th>
+                  <th>Price</th>
+                  <th>Category</th>
+                  <th>Description</th>
+                  <th>Available</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="menuBody">
+                <tr class="loading-row">
+                  <td colspan="7">Loading menu…</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div id="panel-users" class="tab-panel">
+          <div class="card">
+            <div class="card-header">
+              <h2>Users</h2>
+              <div class="controls">
+                <input type="text" class="search-input" id="userSearch" placeholder="Search users…"
+                  oninput="filterUsers()" />
+                <select class="filter-select" id="roleFilter" onchange="filterUsers()">
+                  <option value="">All Roles</option>
+                  <option value="admin">Admin</option>
+                  <option value="customer">Customer</option>
+                </select>
+              </div>
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Joined</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="usersBody">
+                <tr class="loading-row">
+                  <td colspan="5">Loading users…</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="orderOverlay">
+    <div class="modal">
+      <div class="modal-title">Update Order Status</div>
+      <input type="hidden" id="modalOrderId" />
+      <div class="field">
+        <label>Order ID</label>
+        <input type="text" id="modalOrderRef" readonly />
+      </div>
+      <div class="field">
+        <label>Customer</label>
+        <input type="text" id="modalOrderCustomer" readonly />
+      </div>
+      <div class="field">
+        <label>Items</label>
+        <textarea id="modalOrderItems" rows="4" readonly style="resize:none;"></textarea>
+      </div>
+      <div class="field">
+        <label>Status</label>
+        <select id="modalOrderStatus">
+          <option value="pending">Pending</option>
+          <option value="confirmed">Confirmed</option>
+          <option value="preparing">Preparing</option>
+          <option value="ready">Ready</option>
+          <option value="completed">Completed</option>
+          <option value="cancelled">Cancelled</option>
+        </select>
+      </div>
+      <div class="alert" id="orderAlert"></div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeOrderModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveOrderStatus()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="menuOverlay">
+    <div class="modal">
+      <div class="modal-title" id="menuModalTitle">Add Menu Item</div>
+      <input type="hidden" id="modalMenuId" />
+      <div class="field">
+        <label>Item Name</label>
+        <input type="text" id="modalMenuName" placeholder="e.g. Caramel Frappe" />
+      </div>
+      <div class="field">
+        <label>Price (₱)</label>
+        <input type="number" id="modalMenuPrice" placeholder="0" min="0" step="0.01" />
+      </div>
+      <div class="field">
+        <label>Category</label>
+        <select id="modalMenuCategory">
+          <option value="">Select category</option>
+          <option value="Signature">Signature</option>
+          <option value="Add ons">Add ons</option>
+          <option value="Non-Coffee">Non-Coffee</option>
+          <option value="Espresso">Espresso</option>
+          <option value="Blended (Frappe)">Blended (Frappe)</option>
+          <option value="Refreshers">Refreshers</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Image URL</label>
+        <input type="text" id="modalMenuImage" placeholder="https://… or leave blank" oninput="previewImage()" />
+        <img id="imgPreview" class="img-preview" alt="Preview" />
+      </div>
+      <div class="field">
+        <label>Description</label>
+        <textarea id="modalMenuDesc" rows="3" placeholder="Brief description (optional)"></textarea>
+      </div>
+      <div class="field">
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;">
+          <input type="checkbox" id="modalMenuAvailable" checked /> Available for ordering
+        </label>
+      </div>
+      <div class="alert" id="menuAlert"></div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" onclick="closeMenuModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveMenuItem()">Save Item</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="userOverlay">
+    <div class="modal">
+      <div class="modal-title">Manage User</div>
+      <input type="hidden" id="modalUserId" />
+      <div class="field">
+        <label>Full Name</label>
+        <input type="text" id="modalUserName" />
+      </div>
+      <div class="field">
+        <label>Email</label>
+        <input type="email" id="modalUserEmail" />
+      </div>
+      <div class="field">
+        <label>Role</label>
+        <select id="modalUserRole">
+          <option value="customer">Customer</option>
+          <option value="admin">Admin</option>
+        </select>
+      </div>
+      <div class="alert" id="userAlert"></div>
+      <div class="modal-footer">
+        <div class="modal-footer-left">
+          <button class="btn btn-danger" onclick="deleteUser()">Delete User</button>
+        </div>
+        <button class="btn btn-secondary" onclick="closeUserModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="saveUser()">Save Changes</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // const API = 'https://esc-cafe-backend-production.up.railway.app';
+    const API = 'http://localhost:5000';
+    let token = '';
+    let allOrders = [], allMenuItems = [], allUsers = [];
+
+    function authHeader() {
+      return { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' };
+    }
+
+    window.addEventListener('load', () => {
+      token = localStorage.getItem('token') || '';
+      const user = JSON.parse(localStorage.getItem('user') || '{}');
+      if (!token || user.role !== 'admin') { window.location.href = 'index.html'; return; }
+      document.getElementById('userDisplay').textContent = `${user.name} (Admin)`;
+      loadDashboard();
+    });
+
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        item.classList.add('active');
+        const tab = item.dataset.tab;
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        document.getElementById(`panel-${tab}`).classList.add('active');
+        document.getElementById('pageTitle').textContent = item.querySelector('span:last-child').textContent;
+        if (tab === 'orders') loadOrders();
+        if (tab === 'menu') loadMenuItems();
+        if (tab === 'users') loadUsers();
+      });
+    });
+
+    async function loadDashboard() {
+      try {
+        const res = await fetch(`${API}/api/stats/dashboard`, { headers: authHeader() });
+        const s = await res.json();
+        document.getElementById('statsGrid').innerHTML = `
+      <div class="stat-card"><div class="stat-label">Total Orders</div><div class="stat-value">${s.totalOrders ?? 0}</div></div>
+      <div class="stat-card"><div class="stat-label">Pending</div><div class="stat-value">${s.pendingOrders ?? 0}</div></div>
+      <div class="stat-card"><div class="stat-label">Revenue Today</div><div class="stat-value">₱${(s.revenueToday ?? 0).toFixed(0)}</div></div>
+      <div class="stat-card"><div class="stat-label">Total Users</div><div class="stat-value">${s.totalUsers ?? 0}</div></div>
+      <div class="stat-card"><div class="stat-label">Completed Today</div><div class="stat-value">${s.completedToday ?? 0}</div></div>
+    `;
+      } catch (e) {
+        document.getElementById('statsGrid').innerHTML = '<p style="color:#888;padding:20px;">Could not load stats.</p>';
+      }
+    }
+
+    async function loadOrders() {
+      document.getElementById('ordersBody').innerHTML = '<tr class="loading-row"><td colspan="8">Loading…</td></tr>';
+      try {
+        const res = await fetch(`${API}/api/orders`, { headers: authHeader() });
+        allOrders = await res.json();
+        renderOrders(allOrders);
+      } catch {
+        document.getElementById('ordersBody').innerHTML = '<tr class="loading-row"><td colspan="8">Failed to load orders.</td></tr>';
+      }
+    }
+
+    function renderOrders(list) {
+      const tbody = document.getElementById('ordersBody');
+      if (!list.length) {
+        tbody.innerHTML = '<tr><td colspan="8"><div class="empty-state"><div class="icon">📋</div>No orders found</div></td></tr>';
+        return;
+      }
+      tbody.innerHTML = list.map(o => {
+        const items = (o.items || []).map(i => `${i.name} x${i.quantity}`).join(', ');
+        const customer = o.user?.name || o.customerName || 'Guest';
+        return `<tr>
+      <td style="font-family:monospace;font-size:12px;">#${o._id.slice(-6).toUpperCase()}</td>
+      <td>${customer}<br><span style="font-size:11px;color:#888;">${o.customerEmail || o.user?.email || ''}</span></td>
+      <td style="max-width:200px;white-space:normal;font-size:12px;">${items}</td>
+      <td style="font-weight:600;">₱${o.totalAmount}</td>
+      <td><span class="badge badge-${o.orderStatus}">${o.orderStatus}</span></td>
+      <td>${o.paymentMethod}</td>
+      <td style="font-size:12px;color:#888;">${new Date(o.createdAt).toLocaleDateString()}</td>
+      <td><div class="td-actions">
+        <button class="btn btn-sm btn-secondary" onclick="openOrderModal('${o._id}')">Edit</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteOrder('${o._id}')">Del</button>
+      </div></td>
+    </tr>`;
+      }).join('');
+    }
+
+    function filterOrders() {
+      const q = document.getElementById('orderSearch').value.toLowerCase();
+      const st = document.getElementById('orderStatusFilter').value;
+      const pm = document.getElementById('paymentFilter').value;
+      renderOrders(allOrders.filter(o => {
+        const name = (o.user?.name || o.customerName || '').toLowerCase();
+        const id = o._id.toLowerCase();
+        return (!q || name.includes(q) || id.includes(q))
+          && (!st || o.orderStatus === st)
+          && (!pm || o.paymentMethod === pm);
+      }));
+    }
+
+    function openOrderModal(id) {
+      const o = allOrders.find(x => x._id === id);
+      if (!o) return;
+      document.getElementById('modalOrderId').value = id;
+      document.getElementById('modalOrderRef').value = '#' + id.slice(-6).toUpperCase();
+      document.getElementById('modalOrderCustomer').value = o.user?.name || o.customerName || 'Guest';
+      document.getElementById('modalOrderItems').value = (o.items || []).map(i => `${i.name} x${i.quantity} = ₱${i.price * i.quantity}`).join('\n');
+      document.getElementById('modalOrderStatus').value = o.orderStatus;
+      setAlert('orderAlert', '', '');
+      document.getElementById('orderOverlay').classList.add('open');
+    }
+
+    function closeOrderModal() { document.getElementById('orderOverlay').classList.remove('open'); }
+
+    async function saveOrderStatus() {
+      const id = document.getElementById('modalOrderId').value;
+      const orderStatus = document.getElementById('modalOrderStatus').value;
+      try {
+        const res = await fetch(`${API}/api/orders/${id}/status`, {
+          method: 'PUT', headers: authHeader(), body: JSON.stringify({ orderStatus })
+        });
+        if (!res.ok) throw new Error((await res.json()).message);
+        setAlert('orderAlert', 'Order updated!', 'success');
+        loadOrders();
+        setTimeout(closeOrderModal, 900);
+      } catch (e) { setAlert('orderAlert', e.message, 'error'); }
+    }
+
+    async function deleteOrder(id) {
+      if (!confirm('Delete this order?')) return;
+      try {
+        const res = await fetch(`${API}/api/orders/${id}`, { method: 'DELETE', headers: authHeader() });
+        if (!res.ok) throw new Error();
+        loadOrders();
+      } catch { alert('Failed to delete order.'); }
+    }
+
+    async function loadMenuItems() {
+      document.getElementById('menuBody').innerHTML = '<tr class="loading-row"><td colspan="7">Loading…</td></tr>';
+      try {
+        const res = await fetch(`${API}/api/menu`, { headers: authHeader() });
+        allMenuItems = await res.json();
+        renderMenu(allMenuItems);
+      } catch {
+        document.getElementById('menuBody').innerHTML = '<tr class="loading-row"><td colspan="7">Failed to load menu.</td></tr>';
+      }
+    }
+
+    function renderMenu(list) {
+      const tbody = document.getElementById('menuBody');
+      if (!list.length) {
+        tbody.innerHTML = '<tr><td colspan="7"><div class="empty-state"><div class="icon">🍽️</div>No items found</div></td></tr>';
+        return;
+      }
+      tbody.innerHTML = list.map(item => `<tr>
+    <td>${item.image ? `<img src="${item.image}" style="width:48px;height:48px;object-fit:cover;border-radius:8px;border:1px solid #eee;" onerror="this.style.display='none'" />` : '<span style="color:#ccc;font-size:22px;">🖼️</span>'}</td>
+    <td style="font-weight:600;">${item.name}</td>
+    <td>₱${item.price}</td>
+    <td>${item.category}</td>
+    <td style="max-width:200px;font-size:12px;color:#555;">${item.description || '—'}</td>
+    <td><span class="badge ${item.available ? 'badge-available' : 'badge-unavailable'}">${item.available ? 'Yes' : 'No'}</span></td>
+    <td><div class="td-actions">
+      <button class="btn btn-sm btn-secondary" onclick="openMenuModal('${item._id}')">Edit</button>
+      <button class="btn btn-sm btn-danger" onclick="deleteMenuItem('${item._id}')">Del</button>
+    </div></td>
+  </tr>`).join('');
+    }
+
+    function filterMenu() {
+      const q = document.getElementById('menuSearch').value.toLowerCase();
+      const cat = document.getElementById('menuCategoryFilter').value;
+      renderMenu(allMenuItems.filter(i =>
+        (!q || i.name.toLowerCase().includes(q) || (i.description || '').toLowerCase().includes(q))
+        && (!cat || i.category === cat)
+      ));
+    }
+
+    function openMenuModal(id = null) {
+      document.getElementById('menuModalTitle').textContent = id ? 'Edit Menu Item' : 'Add Menu Item';
+      if (id) {
+        const item = allMenuItems.find(x => x._id === id);
+        document.getElementById('modalMenuId').value = id;
+        document.getElementById('modalMenuName').value = item.name;
+        document.getElementById('modalMenuPrice').value = item.price;
+        document.getElementById('modalMenuCategory').value = item.category;
+        document.getElementById('modalMenuImage').value = item.image || '';
+        document.getElementById('modalMenuDesc').value = item.description || '';
+        document.getElementById('modalMenuAvailable').checked = item.available;
+        previewImage();
+      } else {
+        document.getElementById('modalMenuId').value = '';
+        document.getElementById('modalMenuName').value = '';
+        document.getElementById('modalMenuPrice').value = '';
+        document.getElementById('modalMenuCategory').value = '';
+        document.getElementById('modalMenuImage').value = '';
+        document.getElementById('modalMenuDesc').value = '';
+        document.getElementById('modalMenuAvailable').checked = true;
+        document.getElementById('imgPreview').classList.remove('visible');
+      }
+      setAlert('menuAlert', '', '');
+      document.getElementById('menuOverlay').classList.add('open');
+    }
+
+    function closeMenuModal() { document.getElementById('menuOverlay').classList.remove('open'); }
+
+    function previewImage() {
+      const url = document.getElementById('modalMenuImage').value.trim();
+      const preview = document.getElementById('imgPreview');
+      if (url) { preview.src = url; preview.classList.add('visible'); }
+      else { preview.classList.remove('visible'); }
+    }
+
+    async function saveMenuItem() {
+      const id = document.getElementById('modalMenuId').value;
+      const data = {
+        name: document.getElementById('modalMenuName').value.trim(),
+        price: parseFloat(document.getElementById('modalMenuPrice').value),
+        category: document.getElementById('modalMenuCategory').value,
+        image: document.getElementById('modalMenuImage').value.trim(),
+        description: document.getElementById('modalMenuDesc').value.trim(),
+        available: document.getElementById('modalMenuAvailable').checked,
+      };
+      if (!data.name || !data.price || !data.category) {
+        setAlert('menuAlert', 'Name, price and category are required.', 'error'); return;
+      }
+      try {
+        const url = id ? `${API}/api/menu/${id}` : `${API}/api/menu`;
+        const method = id ? 'PUT' : 'POST';
+        const res = await fetch(url, { method, headers: authHeader(), body: JSON.stringify(data) });
+        if (!res.ok) throw new Error((await res.json()).message);
+        setAlert('menuAlert', id ? 'Item updated!' : 'Item added!', 'success');
+        loadMenuItems();
+        setTimeout(closeMenuModal, 900);
+      } catch (e) { setAlert('menuAlert', e.message, 'error'); }
+    }
+
+    async function deleteMenuItem(id) {
+      if (!confirm('Delete this menu item?')) return;
+      try {
+        const res = await fetch(`${API}/api/menu/${id}`, { method: 'DELETE', headers: authHeader() });
+        if (!res.ok) throw new Error();
+        loadMenuItems();
+      } catch { alert('Failed to delete item.'); }
+    }
+
+    async function loadUsers() {
+      document.getElementById('usersBody').innerHTML = '<tr class="loading-row"><td colspan="5">Loading…</td></tr>';
+      try {
+        const res = await fetch(`${API}/api/users`, { headers: authHeader() });
+        allUsers = await res.json();
+        renderUsers(allUsers);
+      } catch {
+        document.getElementById('usersBody').innerHTML = '<tr class="loading-row"><td colspan="5">Failed to load users.</td></tr>';
+      }
+    }
+
+    function renderUsers(list) {
+      const tbody = document.getElementById('usersBody');
+      if (!list.length) {
+        tbody.innerHTML = '<tr><td colspan="5"><div class="empty-state"><div class="icon">👥</div>No users found</div></td></tr>';
+        return;
+      }
+      tbody.innerHTML = list.map(u => `<tr>
+    <td style="font-weight:600;">${u.name}</td>
+    <td style="color:#555;">${u.email}</td>
+    <td><span class="badge badge-${u.role}">${u.role}</span></td>
+    <td style="font-size:12px;color:#888;">${new Date(u.createdAt).toLocaleDateString()}</td>
+    <td><button class="btn btn-sm btn-secondary" onclick="openUserModal('${u._id}')">Manage</button></td>
+  </tr>`).join('');
+    }
+
+    function filterUsers() {
+      const q = document.getElementById('userSearch').value.toLowerCase();
+      const r = document.getElementById('roleFilter').value;
+      renderUsers(allUsers.filter(u =>
+        (!q || u.name.toLowerCase().includes(q) || u.email.toLowerCase().includes(q))
+        && (!r || u.role === r)
+      ));
+    }
+
+    function openUserModal(id) {
+      const u = allUsers.find(x => x._id === id);
+      document.getElementById('modalUserId').value = id;
+      document.getElementById('modalUserName').value = u.name;
+      document.getElementById('modalUserEmail').value = u.email;
+      document.getElementById('modalUserRole').value = u.role;
+      setAlert('userAlert', '', '');
+      document.getElementById('userOverlay').classList.add('open');
+    }
+
+    function closeUserModal() { document.getElementById('userOverlay').classList.remove('open'); }
+
+    async function saveUser() {
+      const id = document.getElementById('modalUserId').value;
+      const data = {
+        name: document.getElementById('modalUserName').value.trim(),
+        email: document.getElementById('modalUserEmail').value.trim(),
+        role: document.getElementById('modalUserRole').value,
+      };
+      try {
+        const res = await fetch(`${API}/api/users/${id}`, { method: 'PUT', headers: authHeader(), body: JSON.stringify(data) });
+        if (!res.ok) throw new Error((await res.json()).message);
+        setAlert('userAlert', 'User updated!', 'success');
+        loadUsers();
+        setTimeout(closeUserModal, 900);
+      } catch (e) { setAlert('userAlert', e.message, 'error'); }
+    }
+
+    async function deleteUser() {
+      if (!confirm('Delete this user permanently?')) return;
+      const id = document.getElementById('modalUserId').value;
+      try {
+        const res = await fetch(`${API}/api/users/${id}`, { method: 'DELETE', headers: authHeader() });
+        if (!res.ok) throw new Error();
+        closeUserModal();
+        loadUsers();
+      } catch { alert('Failed to delete user.'); }
+    }
+
+    function setAlert(id, msg, type) {
+      const el = document.getElementById(id);
+      el.textContent = msg;
+      el.className = `alert ${msg ? 'show' : ''} ${type === 'success' ? 'alert-success' : type === 'error' ? 'alert-error' : ''}`;
+    }
+
+    document.querySelectorAll('.overlay').forEach(ov => {
+      ov.addEventListener('click', e => { if (e.target === ov) ov.classList.remove('open'); });
+    });
+
+    function logout() {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      window.location.href = 'index.html';
+    }
+  </script>
+</body>
+
+</html>
