@@ -134,6 +134,12 @@ function loginWithFacebook() {
   alert("Facebook login coming soon!");
 }
 
+function logout() {
+  localStorage.removeItem("token");
+  localStorage.removeItem("user");
+  window.location.href = "index.html";
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   updateCartBadge();
 
@@ -142,5 +148,14 @@ document.addEventListener("DOMContentLoaded", () => {
   if (token && document.body.dataset.page === "login") {
     if (user.role === "admin") window.location.href = "admin.html";
     else window.location.href = "mainm.html";
+  }
+
+  if (token) {
+    const navLinks = document.getElementById("navLinks");
+    if (navLinks) {
+      const logoutLi = document.createElement("li");
+      logoutLi.innerHTML = '<a href="#" onclick="logout()">Logout</a>';
+      navLinks.appendChild(logoutLi);
+    }
   }
 });

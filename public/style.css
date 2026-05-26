@@ -316,6 +316,25 @@ footer {
   transform: scale(1.05);
 }
 
+.about-video {
+  margin-top: 32px;
+  width: 100%;
+}
+
+.video-placeholder {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background: #ddd;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #888;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  border: 2px dashed #bbb;
+  border-radius: 8px;
+}
 
 /* ================================================
    CONTACT PAGE (contact.html)
@@ -738,6 +757,7 @@ footer {
   }
   .about-text    { margin-bottom: 0; }
   .about-photos  { gap: 16px; }
+  .about-video   { grid-column: 1 / -1; }
 
   /* Login split panel */
   .login-wrapper {
@@ -1227,7 +1247,7 @@ footer {
 
 /* ── Desktop (1024px+) ── */
 @media (min-width: 1024px) {
-  .main-menu-section    { padding: 64px 60px 80px; gap: 52px; }
+  .main-menu-section    { padding: 64px 60px 80px; gap: 52px; max-width: 1200px; margin: 56px auto 0 auto; }
   .mm-cards             { gap: 20px; }
   .mm-bottom-row        { gap: 20px; }
   .mm-card-info         { padding: 10px 14px; }
