@@ -40,7 +40,11 @@ router.get('/', protect, adminOnly, async (req, res) => {
 router.put('/:id/status', protect, adminOnly, async (req, res) => {
   try {
     const { orderStatus } = req.body;
-    const order = await Order.findByIdAndUpdate(req.params.id, { orderStatus }, { new: true });
+    const update = { orderStatus };
+    if (orderStatus === 'confirmed' || orderStatus === 'completed') {
+      update.paymentStatus = 'paid';
+    }
+    const order = await Order.findByIdAndUpdate(req.params.id, update, { new: true });
     if (!order) return res.status(404).json({ message: 'Order not found' });
     res.json(order);
   } catch (err) {
