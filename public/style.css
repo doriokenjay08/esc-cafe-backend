@@ -86,7 +86,7 @@ a   { text-decoration: none; color: inherit; }
 
 /* ── FOOTER ──────────────────────────────────────────── */
 footer {
-  background: var(--blue);
+  background: var(--cream);
   padding: 22px 24px;
   text-align: center;
 }
