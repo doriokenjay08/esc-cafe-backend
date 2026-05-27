@@ -316,24 +316,37 @@ footer {
   transform: scale(1.05);
 }
 
-.about-video {
-  margin-top: 32px;
-  width: 100%;
+.about-video{
+  display:flex;
+  gap:20px;
+  width:100%;
+  margin-top:32px;
 }
 
-.video-placeholder {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  background: #ddd;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #888;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 2px;
-  border: 2px dashed #bbb;
-  border-radius: 8px;
+.video-placeholder{
+  flex:1;
+  aspect-ratio:4 / 5;
+  overflow:hidden;
+  border-radius:8px;
+  background:#ddd;
+}
+
+.video-placeholder iframe{
+  width:100%;
+  height:100%;
+  border:none;
+}
+
+@media (max-width:768px){
+
+.about-video{
+    flex-direction:column;
+}
+
+.video-placeholder{
+    width:100%;
+}
+
 }
 
 /* ================================================
