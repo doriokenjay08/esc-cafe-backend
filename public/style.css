@@ -315,38 +315,20 @@ footer {
 .about-photo-wrap:hover img {
   transform: scale(1.05);
 }
+.about-video { margin-top: 32px; width: 100%; } 
 
-.about-video{
-    display:flex;
-    gap:20px;
-    width:100%;
-    margin-top:30px;
-}
-
-.video-placeholder{
-    width:300px;
-    height:250px;
-    background:#b7b7b7;
-    border:2px dashed #888;
-    border-radius:8px;
-
-    display:flex;
-    justify-content:center;
-    align-items:center;
-}
-
-@media(max-width:768px){
-
-.about-video{
-    flex-direction:column;
-}
-
-.video-placeholder{
-    width:100%;
-}
-
-}
-
+.video-placeholder 
+{ width: 100%; 
+aspect-ratio: 16 / 9; 
+background: #ddd;
+display: flex; align-items: center; 
+justify-content: center; 
+color: #888; 
+font-weight: 600; 
+text-transform:   
+uppercase; letter-spacing: 2px; 
+border: 2px dashed #bbb; 
+border-radius: 8px; }
 
 /* ================================================
    CONTACT PAGE (contact.html)
