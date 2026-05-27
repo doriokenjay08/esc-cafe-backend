@@ -40,8 +40,10 @@ async function loadFullMenu() {
       group.className = "mm-group";
       group.innerHTML = `<p class="mm-group-label">${cat}</p>`;
 
+      const total = catItems.length;
+      const cols = total >= 4 ? 4 : total >= 3 ? 3 : total >= 2 ? 2 : 1;
       const cards = document.createElement("div");
-      cards.className = `mm-cards mm-cards--${Math.min(catItems.length, 4)}`;
+      cards.className = `mm-cards mm-cards--${cols}`;
 
       catItems.forEach((item) => {
         const card = document.createElement("div");

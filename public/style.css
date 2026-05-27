@@ -1115,15 +1115,13 @@ footer {
 .mm-cards {
   display: grid;
   gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
 }
 
-.mm-cards--3 {
-  grid-template-columns: repeat(3, 1fr);
-}
-
-.mm-cards--1 {
-  grid-template-columns: repeat(1, minmax(0, 160px));
-}
+.mm-cards--4 { grid-template-columns: repeat(4, 1fr); }
+.mm-cards--3 { grid-template-columns: repeat(3, 1fr); }
+.mm-cards--2 { grid-template-columns: repeat(2, 1fr); }
+.mm-cards--1 { grid-template-columns: repeat(1, minmax(0, 160px)); }
 
 /* ── INDIVIDUAL CARD ─────────────────────────────────── */
 .mm-card {

@@ -597,6 +597,13 @@
       color: var(--danger);
     }
 
+    .dashboard-header {
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
     @media (max-width: 768px) {
       .sidebar {
         width: 64px;
@@ -657,6 +664,15 @@
       <div class="content">
 
         <div id="panel-dashboard" class="tab-panel active">
+          <div class="dashboard-header">
+            <div class="controls">
+              <select class="filter-select" id="rangeFilter" onchange="loadDashboard()">
+                <option value="today">Today</option>
+                <option value="week">This Week</option>
+                <option value="month">This Month</option>
+              </select>
+            </div>
+          </div>
           <div class="stats-grid" id="statsGrid">
             <div class="stat-card">
               <div class="stat-label">Total Orders</div>
@@ -667,7 +683,7 @@
               <div class="stat-value">—</div>
             </div>
             <div class="stat-card">
-              <div class="stat-label">Revenue Today</div>
+              <div class="stat-label">Revenue</div>
               <div class="stat-value">—</div>
             </div>
             <div class="stat-card">
@@ -675,7 +691,7 @@
               <div class="stat-value">—</div>
             </div>
             <div class="stat-card">
-              <div class="stat-label">Completed Today</div>
+              <div class="stat-label">Completed</div>
               <div class="stat-value">—</div>
             </div>
           </div>
@@ -947,15 +963,16 @@
     });
 
     async function loadDashboard() {
+      const range = document.getElementById('rangeFilter')?.value || 'today';
       try {
-        const res = await fetch(`${API}/api/stats/dashboard`, { headers: authHeader() });
+        const res = await fetch(`${API}/api/stats/dashboard?range=${range}`, { headers: authHeader() });
         const s = await res.json();
         document.getElementById('statsGrid').innerHTML = `
       <div class="stat-card"><div class="stat-label">Total Orders</div><div class="stat-value">${s.totalOrders ?? 0}</div></div>
       <div class="stat-card"><div class="stat-label">Pending</div><div class="stat-value">${s.pendingOrders ?? 0}</div></div>
-      <div class="stat-card"><div class="stat-label">Revenue Today</div><div class="stat-value">₱${(s.revenueToday ?? 0).toFixed(0)}</div></div>
+      <div class="stat-card"><div class="stat-label">Revenue</div><div class="stat-value">₱${(s.revenue ?? 0).toFixed(0)}</div></div>
       <div class="stat-card"><div class="stat-label">Total Users</div><div class="stat-value">${s.totalUsers ?? 0}</div></div>
-      <div class="stat-card"><div class="stat-label">Completed Today</div><div class="stat-value">${s.completedToday ?? 0}</div></div>
+      <div class="stat-card"><div class="stat-label">Completed</div><div class="stat-value">${s.completed ?? 0}</div></div>
     `;
       } catch (e) {
         document.getElementById('statsGrid').innerHTML = '<p style="color:#888;padding:20px;">Could not load stats.</p>';
