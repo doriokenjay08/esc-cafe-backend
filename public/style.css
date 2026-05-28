@@ -840,7 +840,7 @@ footer {
   font-family: var(--font-body);
   font-size: 14px;
   font-weight: 400;
-  color: #444;
+  color: #000;
   line-height: 1.75;
   margin-bottom: 32px;
 }
