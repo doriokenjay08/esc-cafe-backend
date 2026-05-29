@@ -1005,16 +1005,18 @@ footer {
   .menu-section      { padding: 28px 16px; gap: 28px; }
   .menu-script       { font-size: 26px; }
   .menu-desc         { font-size: 12px; }
-  .menu-cards        { gap: 8px; }
-  .menu-card-name    { font-size: 9px; }
-  .menu-card-price   { font-size: 12px; }
+  .menu-cards        { grid-template-columns: 1fr; gap: 16px; }
+  .menu-card-name    { font-size: 16px; }
+  .menu-card-price   { font-size: 18px; }
   .btn-menu          { padding: 12px 24px; font-size: 10px; }
 }
 
 /* ── Phones (361px – 639px) ── */
 @media (min-width: 361px) and (max-width: 639px) {
   .menu-section   { padding: 36px 20px; }
-  .menu-cards     { gap: 10px; }
+  .menu-cards     { grid-template-columns: 1fr; gap: 20px; }
+  .menu-card-name    { font-size: 16px; }
+  .menu-card-price   { font-size: 18px; }
 }
 
 /* ── Tablets (640px – 1023px) ── */
@@ -1218,19 +1220,21 @@ footer {
   .main-menu-section    { padding: 28px 14px 40px; gap: 28px; }
   .main-menu-script     { font-size: 26px; }
   .mm-group-label       { font-size: 18px; }
-  .mm-cards--3          { grid-template-columns: repeat(2, 1fr); }
-  .mm-bottom-row        { grid-template-columns: repeat(2, 1fr); gap: 10px; }
-  .mm-bottom-col .mm-group-label { font-size: 13px; }
-  .mm-card-name         { font-size: 9px; }
-  .mm-card-price        { font-size: 12px; }
+  .mm-cards, .mm-cards--1, .mm-cards--2, .mm-cards--3, .mm-cards--4 { grid-template-columns: 1fr; }
+  .mm-bottom-row        { grid-template-columns: 1fr; gap: 10px; }
+  .mm-bottom-col .mm-group-label { font-size: 16px; }
+  .mm-card-name         { font-size: 16px; }
+  .mm-card-price        { font-size: 18px; }
 }
 
 /* ── Phones (361px – 639px) ── */
 @media (min-width: 361px) and (max-width: 639px) {
   .main-menu-section    { padding: 36px 18px 48px; }
-  .mm-cards--3          { grid-template-columns: repeat(3, 1fr); }
-  .mm-bottom-row        { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-  .mm-bottom-col .mm-group-label { font-size: 14px; }
+  .mm-cards, .mm-cards--1, .mm-cards--2, .mm-cards--3, .mm-cards--4 { grid-template-columns: 1fr; }
+  .mm-bottom-row        { grid-template-columns: 1fr; gap: 12px; }
+  .mm-bottom-col .mm-group-label { font-size: 16px; }
+  .mm-card-name         { font-size: 16px; }
+  .mm-card-price        { font-size: 18px; }
 }
 
 /* ── Tablets (640px – 1023px) ── */
